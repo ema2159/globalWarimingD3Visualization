@@ -2,7 +2,7 @@
 const MARGIN = {LEFT: 10, RIGHT: 10, TOP: 10, BOTTOM: 10};
 const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT;
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
-const INNERRADIUS = 30;
+const INNERRADIUS = 60;
 const OUTERRADIUS = Math.min(WIDTH, HEIGHT) / 2;
 
 let svg, g, xLabel, yLabel, x, y, colorScale, xAxisGroup, yAxisGroup;
@@ -73,13 +73,9 @@ function updateChart(data) {
           .padRadius(INNERRADIUS))
 
   // Axes initialization
-  xAxisGroup = g
-    .append("g")
-    .attr("class", "x axis")
-    .attr("text-anchor", "middle")
-  //   .attr("transform", `translate(0, ${HEIGHT})`);
-
+  // Y axis
   yAxisGroup = g.append("g").attr("class", "y axis");
+
   const yTicks = yAxisGroup
       .selectAll("g")
       .data(y.ticks(5))
@@ -101,6 +97,34 @@ function updateChart(data) {
     .attr("stroke", "black")
     .attr("opacity", 0.2)
     .attr("r", function() { return y(y.domain()[0])});
+
+  // X axis
+  xAxisGroup = g
+    .append("g")
+    .attr("class", "x axis");
+  
+  let xTicks = xAxisGroup
+      .selectAll("g")
+      .data(data.map(d => d.Statistics.slice(0, 3)))
+      .enter().append("g")
+      .attr("text-anchor", "middle")
+      .attr("transform", function(d) {
+        return "rotate(" + ((x(d)) * 180 / Math.PI - 90) + ")translate(" + INNERRADIUS + ",0)";
+      });
+  
+  xTicks.append("line")
+    .attr("x2", -5)
+    .attr("stroke", "#000");
+
+  xTicks.append("text")
+    .attr("transform", function(d) { 
+      var angle = x(d);
+      return ((angle < Math.PI / 2) || (angle > (Math.PI * 3 / 2))) ? "rotate(90)translate(0,22)" : "rotate(-90)translate(0, -15)"; })
+    .text(function(d) { 
+      return d;
+    })
+    .style("font-size", 10)
+    .attr("opacity", 0.6)
 }
 
 export {initChart, updateChart};
