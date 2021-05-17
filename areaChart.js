@@ -18,7 +18,6 @@ function initChart(canvasElement) {
     .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
   // Labels
-  // X label
   xLabel = g
     .append("text")
     .attr("class", "x-label")
@@ -38,7 +37,6 @@ function initChart(canvasElement) {
     .text("Temperature (Celsius)");
 
   // Scales
-  // x = d3.scaleUtc().range([0, WIDTH]);
   x = d3.scaleTime().range([0, WIDTH]);
   y = d3.scaleLinear().range([HEIGHT, 0]);
 
