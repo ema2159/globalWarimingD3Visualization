@@ -65,7 +65,6 @@ function updateChart(data) {
       d3.max(data, (d) => Number(d.Temperature))
     ),
   ]);
-  console.log(d3.min(data, (d) => Number(d.Temperature)));
 
   // Line and area generator
   let curve = d3.curveMonotoneX;
@@ -92,11 +91,26 @@ function updateChart(data) {
   const yAxisCall = d3.axisLeft(y);
   yAxisGroup.call(yAxisCall);
 
+  g.append("linearGradient")
+    .attr("id", "temperature-gradient")
+    .attr("gradientUnits", "userSpaceOnUse")
+    .attr("x1", 0).attr("y1", y(-30))
+    .attr("x2", 0).attr("y2", y(30))
+    .selectAll("stop")
+    .data([
+      {offset: "30%", color: "steelblue"},
+      {offset: "50%", color: "#e0e0e0"},
+      {offset: "70%", color: "#dc2f02"}
+    ])
+    .enter().append("stop")
+    .attr("offset", function(d) { return d.offset; })
+    .attr("stop-color", function(d) { return d.color; });
+
   // Add line and area
   g.append("path")
     .datum(data)
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
+    .attr("stroke", "#8d99ae")
     .attr("stroke-width", 1.5)
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
@@ -104,7 +118,7 @@ function updateChart(data) {
 
   g.append("path")
     .datum(data)
-    .attr("fill", "steelblue")
+    .attr("fill", "url(#temperature-gradient)")
     .attr("opacity", 0.5)
     .attr("d", area);
 }
