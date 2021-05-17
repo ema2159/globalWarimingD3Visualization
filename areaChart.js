@@ -5,10 +5,10 @@ const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 
 let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup;
 
-function initChart() {
+function initChart(canvasElement) {
   // Visualization canvas
   svg = d3
-    .select("#areaChart")
+    .select(canvasElement)
     .append("svg")
     .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
     .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM);
