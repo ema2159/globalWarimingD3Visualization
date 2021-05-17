@@ -25,7 +25,6 @@ const xLabel = g
   .attr("y", HEIGHT + 40)
   .attr("font-size", "20px")
   .attr("text-anchor", "middle")
-  .text(`Year`);
 
 const yLabel = g
   .append("text")
@@ -51,6 +50,7 @@ const xAxisGroup = g
 const yAxisGroup = g.append("g").attr("class", "y axis");
 
 function updateChart(data) {
+  xLabel.text(`Year ${data[0].Year}`);
   // Add domains
   const timeParser = d3.timeParse("%b");
   const dateRange = data.map((d) => timeParser(d.Statistics.slice(0, 3)));
