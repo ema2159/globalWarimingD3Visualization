@@ -19,25 +19,6 @@ function initChart(canvasElement) {
     .append("g")
     .attr("transform", "translate(" + WIDTH/2 + "," + HEIGHT/2 + ")");;
 
-  // Labels
-  // xLabel = g
-  //   .append("text")
-  //   .attr("class", "x-label")
-  //   .attr("x", WIDTH / 2)
-  //   .attr("y", HEIGHT + 40)
-  //   .attr("font-size", "20px")
-  //   .attr("text-anchor", "middle");
-
-  // yLabel = g
-  //   .append("text")
-  //   .attr("class", "y-label")
-  //   .attr("x", -HEIGHT / 2)
-  //   .attr("y", -30)
-  //   .attr("font-size", "20px")
-  //   .attr("text-anchor", "middle")
-  //   .attr("transform", "rotate(-90)")
-  //   .text("Temperature (Celsius)");
-
   // Scales
   x = d3.scaleBand()
     .range([0, 2 * Math.PI])
