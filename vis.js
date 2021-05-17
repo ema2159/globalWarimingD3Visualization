@@ -1,4 +1,3 @@
-import "https://d3js.org/d3.v6.min.js";
 
 // Plot constants
 const MARGIN = {LEFT: 100, RIGHT: 20, TOP: 20, BOTTOM: 100};
