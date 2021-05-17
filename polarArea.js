@@ -17,7 +17,7 @@ function initChart(canvasElement) {
 
   g = svg
     .append("g")
-    .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
+    .attr("transform", "translate(" + WIDTH / 2 + "," + (HEIGHT / 2 + 20) + ")");
 
   // Scales
   x = d3
