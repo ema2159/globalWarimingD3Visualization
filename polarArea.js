@@ -42,16 +42,8 @@ function initChart(canvasElement) {
   x = d3.scaleBand()
     .range([0, 2 * Math.PI])
     .align(0);
-  y = d3.scaleRadial()
+  y = d3.scaleLinear()
     .range([INNERRADIUS, OUTERRADIUS])
-
-  // Axes initialization
-  // xAxisGroup = g
-  //   .append("g")
-  //   .attr("class", "x axis")
-  //   .attr("transform", `translate(0, ${HEIGHT})`);
-
-  // yAxisGroup = g.append("g").attr("class", "y axis");
 }
 
 function updateChart(data) {
@@ -59,31 +51,51 @@ function updateChart(data) {
   // Add domains
   x.domain(data.map(d => d.Statistics.slice(0, 3)));
   y.domain([-30, 30]);
-
-  // Add axes
-  // const xAxisCall = d3
-  //   .axisBottom(x)
-  //   .ticks(d3.timeMonth, 1)
-  //   .tickFormat(d3.timeFormat("%b"));
-  // xAxisGroup.call(xAxisCall);
-
-  // const yAxisCall = d3.axisLeft(y);
-  // yAxisGroup.call(yAxisCall);
+  
   // Add bars
-  g
-    .selectAll("path")
+  g.selectAll("path")
     .data(data)
     .enter()
     .append("path")
-      .attr("fill", "#69b3a2")
-      .attr("d", d3.arc()     // imagine your doing a part of a donut plot
+    .attr("fill", "steelblue")
+    .attr("opacity", 0.8)
+    .attr("d", d3.arc()     // imagine your doing a part of a donut plot
           .innerRadius(INNERRADIUS)
           .outerRadius(function(d) { return y(d.Temperature); })
           .startAngle(function(d) { return x(d.Statistics.slice(0, 3)); })
           .endAngle(function(d) { return x(d.Statistics.slice(0, 3)) + x.bandwidth(); })
-          .padAngle(0.1)
+          .padAngle(0.08)
           .padRadius(INNERRADIUS))
 
+  // Axes initialization
+  xAxisGroup = g
+    .append("g")
+    .attr("class", "x axis")
+    .attr("text-anchor", "middle")
+  //   .attr("transform", `translate(0, ${HEIGHT})`);
+
+  yAxisGroup = g.append("g").attr("class", "y axis");
+  const yTicks = yAxisGroup
+      .selectAll("g")
+      .data(y.ticks(5))
+      .enter().append("g");
+  
+  yTicks.append("circle")
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("opacity", 0.2)
+    .attr("r", y);
+  
+  yTicks.append("text")
+    .attr("y", function(d) { return -y(d); })
+    .attr("dy", "0.35em")
+    .text(function(d) { return d + "℃"; });
+  
+  yAxisGroup.append("circle")
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("opacity", 0.2)
+    .attr("r", function() { return y(y.domain()[0])});
 }
 
 export {initChart, updateChart};
