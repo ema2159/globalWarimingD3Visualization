@@ -1,10 +1,12 @@
 import * as areaChart from "./areaChart.js";
+import * as polarArea from "./polarArea.js";
 
 
 let country = "Russia";
 let year = "2012";
 
 areaChart.initChart("#areaChart");
+polarArea.initChart("#polarArea");
 
 d3.csv("data/temp-1901-2020-all.csv").then(function (data) {
   data = d3.group(data, (d) => d.Country);
@@ -15,4 +17,5 @@ d3.csv("data/temp-1901-2020-all.csv").then(function (data) {
   let yearData = yearGroupedData.get(year);
   console.log(yearData);
   areaChart.updateChart(yearData);
+  polarArea.updateChart(yearData);
 });
