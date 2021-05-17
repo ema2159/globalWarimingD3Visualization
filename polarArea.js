@@ -5,7 +5,7 @@ const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 const INNERRADIUS = 30;
 const OUTERRADIUS = Math.min(WIDTH, HEIGHT) / 2;
 
-let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup;
+let svg, g, xLabel, yLabel, x, y, colorScale, xAxisGroup, yAxisGroup;
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -44,6 +44,11 @@ function initChart(canvasElement) {
     .align(0);
   y = d3.scaleLinear()
     .range([INNERRADIUS, OUTERRADIUS])
+
+  // Color scaleBand
+  colorScale = d3.scaleSqrt()
+    .domain([-30, 30])
+    .range(["steelblue", "#dc2f02"])
 }
 
 function updateChart(data) {
@@ -57,7 +62,7 @@ function updateChart(data) {
     .data(data)
     .enter()
     .append("path")
-    .attr("fill", "steelblue")
+    .attr("fill", d => colorScale(d.Temperature))
     .attr("opacity", 0.8)
     .attr("d", d3.arc()     // imagine your doing a part of a donut plot
           .innerRadius(INNERRADIUS)
