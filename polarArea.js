@@ -105,7 +105,7 @@ function updateChart(data) {
     .attr("transform", function (d) {
       return (
         "rotate(" +
-        ((x(d) * 180) / Math.PI - 90) +
+        ((x(d) * 180) / Math.PI - 75) +
         ")translate(" +
         INNERRADIUS +
         ",0)"
