@@ -42,7 +42,7 @@ function initChart(canvasElement) {
     .range([0, 2 * Math.PI])
     .align(0)
     .domain(monthNames);
-  y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-30, 30]);
+  y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-40, 30]);
 
   // Color scaleBand
   colorScale = d3.scaleSqrt().domain([-30, 30]).range(["steelblue", "#dc2f02"]);
@@ -116,13 +116,19 @@ function initChart(canvasElement) {
 }
 
 function updateChart(data) {
+  const trans = d3.transition().duration(400);
+
   const bars = g.selectAll("path").data(data);
+
+  bars.exit().remove();
 
   // Add bars
   bars
     .enter()
     .append("path")
     .lower()
+    .merge(bars)
+    .transition(trans)
     .attr("fill", (d) => colorScale(d.Temperature))
     .attr("opacity", 0.8)
     .attr(
