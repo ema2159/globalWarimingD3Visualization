@@ -63,7 +63,7 @@ function initChart(canvasElement) {
   yTicks
     .append("text")
     .attr("y", function (d) {
-      return -y(d);
+      return -y(d+3);
     })
     .attr("dy", "0.35em")
     .text(function (d) {
