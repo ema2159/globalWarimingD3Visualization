@@ -22,6 +22,7 @@ d3.csv("data/temp-1901-2020-all.csv").then(function (data) {
   d3.interval(() => {
     year = year < 2020 ? year + 1 : 1901;
     yearData = yearGroupedData.get(String(year));
+    areaChart.updateChart(yearData);
     polarArea.updateChart(yearData);
   }, 400)
 });

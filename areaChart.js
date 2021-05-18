@@ -16,6 +16,7 @@ function initChart(canvasElement) {
   g = svg
     .append("g")
     .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
+  g.append("path").attr("class", "plot");
 
   // Labels
   xLabel = g
@@ -50,6 +51,8 @@ function initChart(canvasElement) {
 }
 
 function updateChart(data) {
+  const trans = d3.transition().duration(400);
+
   xLabel.text(`Year ${data[0].Year}`);
   // Add domains
   const timeParser = d3.timeParse("%b");
@@ -113,9 +116,14 @@ function updateChart(data) {
       return d.color;
     });
 
+  const linePath = g.selectAll("path.plot")
+        .datum(data);
+
+  linePath.exit().remove();
+
   // Add line and area
-  g.append("path")
-    .datum(data)
+  linePath
+    .merge(linePath)
     .attr("fill", "none")
     .attr("stroke", "#8d99ae")
     .attr("stroke-width", 1.5)
@@ -123,10 +131,16 @@ function updateChart(data) {
     .attr("stroke-linecap", "round")
     .attr("d", line);
 
-  g.append("path")
-    .datum(data)
+  const areaPath = g.selectAll("path.plot")
+    .datum(data);
+
+  areaPath.exit().remove();
+
+  areaPath
+    .merge(areaPath)
     .attr("fill", "url(#temperature-gradient)")
-    .attr("opacity", 0.5)
+    .attr("opacity", 0.8)
+    .transition(trans)
     .attr("d", area);
 }
 
