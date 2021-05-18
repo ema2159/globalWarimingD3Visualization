@@ -17,49 +17,35 @@ function initChart(canvasElement) {
 
   g = svg
     .append("g")
-    .attr("transform", "translate(" + WIDTH / 2 + "," + (HEIGHT / 2 + 20) + ")");
+    .attr(
+      "transform",
+      "translate(" + WIDTH / 2 + "," + (HEIGHT / 2 + 20) + ")"
+    );
 
   // Scales
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   x = d3
     .scaleBand()
     .range([0, 2 * Math.PI])
-    .align(0);
-  y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]);
+    .align(0)
+    .domain(monthNames);
+  y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-30, 30]);
 
   // Color scaleBand
   colorScale = d3.scaleSqrt().domain([-30, 30]).range(["steelblue", "#dc2f02"]);
-}
-
-function updateChart(data) {
-  // xLabel.text(`Year ${data[0].Year}`);
-  // Add domains
-  x.domain(data.map((d) => d.Statistics.slice(0, 3)));
-  y.domain([-30, 30]);
-
-  // Add bars
-  g.selectAll("path")
-    .data(data)
-    .enter()
-    .append("path")
-    .attr("fill", (d) => colorScale(d.Temperature))
-    .attr("opacity", 0.8)
-    .attr(
-      "d",
-      d3
-        .arc() // imagine your doing a part of a donut plot
-        .innerRadius(INNERRADIUS)
-        .outerRadius(function (d) {
-          return y(d.Temperature);
-        })
-        .startAngle(function (d) {
-          return x(d.Statistics.slice(0, 3));
-        })
-        .endAngle(function (d) {
-          return x(d.Statistics.slice(0, 3)) + x.bandwidth();
-        })
-        .padAngle(0.08)
-        .padRadius(INNERRADIUS)
-    );
 
   // Axes initialization
   // Y axis
@@ -98,7 +84,7 @@ function updateChart(data) {
 
   let xTicks = xAxisGroup
     .selectAll("g")
-    .data(data.map((d) => d.Statistics.slice(0, 3)))
+    .data(monthNames)
     .enter()
     .append("g")
     .attr("text-anchor", "middle")
@@ -127,6 +113,35 @@ function updateChart(data) {
     })
     .style("font-size", 10)
     .attr("opacity", 0.6);
+}
+
+function updateChart(data) {
+  const bars = g.selectAll("path").data(data);
+
+  // Add bars
+  bars
+    .enter()
+    .append("path")
+    .lower()
+    .attr("fill", (d) => colorScale(d.Temperature))
+    .attr("opacity", 0.8)
+    .attr(
+      "d",
+      d3
+        .arc() // imagine your doing a part of a donut plot
+        .innerRadius(INNERRADIUS)
+        .outerRadius(function (d) {
+          return y(d.Temperature);
+        })
+        .startAngle(function (d) {
+          return x(d.Statistics.slice(0, 3));
+        })
+        .endAngle(function (d) {
+          return x(d.Statistics.slice(0, 3)) + x.bandwidth();
+        })
+        .padAngle(0.08)
+        .padRadius(INNERRADIUS)
+    );
 }
 
 export {initChart, updateChart};
