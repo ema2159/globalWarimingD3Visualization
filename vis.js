@@ -13,7 +13,7 @@ choroplethMap.initChart("#choroplethMap");
 // Datasets to load
 let dataPromises = [
   d3.csv("data/temp-1901-2020-all.csv"),
-  d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+  d3.json("data/world.geo.json")
 ]
 
 Promise.all(dataPromises).then(function (data) {
