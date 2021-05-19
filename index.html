@@ -2,14 +2,21 @@
 <html>
     <head>
       <title>Global warming visualization</title>
+      <!-- Styles -->
+      <link href="styles/styles.css" rel="stylesheet" />
     </head>
     <body>
-      <div id="chartContainer">
-	<div id="polarAreaPlot"></div>
-	<div id="areaChart"></div>
+      <div id="outerContainer">
+	<div id="choroplethMap"></div>
+	<div id="chartContainer">
+	  <div id="polarArea"></div>
+	  <div id="areaChart"></div>
+	</div>
       </div>
       <div id="message"></div>
+      <button>+</button>
     </body>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
     <script type="module" src="./vis.js"></script>
 </html>
