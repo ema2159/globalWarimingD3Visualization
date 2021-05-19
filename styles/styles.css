@@ -1,0 +1,23 @@
+:root {
+  --syntax_normal: #1b1e23;
+}
+
+#outerContainer {
+  /* padding: 100px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#choroplethMap {
+  /* padding: 100px; */
+  display: flex;
+  justify-content: center;
+}
+
+#chartContainer {
+  padding: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
