@@ -59,14 +59,8 @@ function updateChart(data) {
   const dateRange = data.map((d) => timeParser(d.Statistics.slice(0, 3)));
   x.domain(d3.extent(dateRange));
   y.domain([
-    Math.min(
-      0,
-      d3.min(data, (d) => Number(d.Temperature))
-    ),
-    Math.max(
-      0,
-      d3.max(data, (d) => Number(d.Temperature))
-    ),
+    d3.min(data, (d) => Number(d.Temperature)) < 0 ? -30 : 0,
+    30
   ]);
 
   // Line and area generator
