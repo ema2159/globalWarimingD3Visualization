@@ -97,9 +97,8 @@ function updateChart(data) {
     .attr("y2", y(20))
     .selectAll("stop")
     .data([
-      {offset: "30%", color: "steelblue"},
-      {offset: "50%", color: "#e0e0e0"},
-      {offset: "70%", color: "#dc2f02"},
+      {offset: "45%", color: "#3C81B7"},
+      {offset: "70%", color: "#CE241C"},
     ])
     .enter()
     .append("stop")

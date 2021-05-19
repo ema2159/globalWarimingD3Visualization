@@ -45,7 +45,7 @@ function initChart(canvasElement) {
   y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-40, 30]);
 
   // Color scaleBand
-  colorScale = d3.scaleSqrt().domain([-30, 30]).range(["steelblue", "#dc2f02"]);
+  colorScale = d3.scaleSqrt().domain([-30, 30]).range(["#3C81B7", "#CE241C"]);
 
   // Axes initialization
   // Y axis
