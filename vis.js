@@ -3,7 +3,7 @@ import * as polarArea from "./polarArea.js";
 import * as choroplethMap from "./choroplethMap.js";
 
 
-let country = "Costa Rica";
+let country = "CRI";
 let year = 1901;
 
 areaChart.initChart("#areaChart");
@@ -20,22 +20,23 @@ Promise.all(dataPromises).then(function (data) {
   let tempData = data[0];
   let topoData = data[1];
   // Group data per country and per year
-  tempData = d3.group(tempData, (d) => d.Country, (d) => d.Year);
+  tempData = d3.group(tempData, (d) => d.Year, (d) => d.ISO3);
   console.log(tempData);
   
-  let countryData = tempData.get(country);
-  console.log(countryData);
-  let yearData = countryData.get(String(year));
+  let yearData = tempData.get(String(year));
   console.log(yearData);
-  areaChart.updateChart(yearData);
-  polarArea.updateChart(yearData);
+  let countryData = yearData.get(country);
+  console.log(countryData);
+  areaChart.updateChart(countryData);
+  polarArea.updateChart(countryData);
+  choroplethMap.updateChart(topoData, yearData);
 
   d3.interval(() => {
     year = year < 2020 ? year + 1 : 1901;
-    yearData = countryData.get(String(year));
-    areaChart.updateChart(yearData);
-    polarArea.updateChart(yearData);
-    choroplethMap.updateChart(topoData, yearData);
+    yearData = tempData.get(String(year));
+    countryData = yearData.get(country);
+    areaChart.updateChart(countryData);
+    polarArea.updateChart(countryData);
   }, 400)
 });
  
