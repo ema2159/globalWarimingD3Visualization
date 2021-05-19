@@ -23,9 +23,9 @@ function initChart(canvasElement) {
     .domain([1, 10])
     .rangeRound([600, 860]);
 
-  colorScale = d3.scaleThreshold()
-  .domain([-30, -10, 0, 10, 30])
-  .range(d3.schemeBlues[7]);
+  colorScale = d3.scaleLinear()
+  .domain([-30, 30])
+  .range(["#3C81B7", "#CE241C"]);
   
   g = svg.append("g")
     .attr("class", "key")
