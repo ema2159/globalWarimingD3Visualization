@@ -78,7 +78,7 @@ function initChart(canvasElement) {
 function updateChart(data) {
   const trans = d3.transition().duration(400);
 
-  xLabel.text(`Year ${data[0].Year}`);
+  xLabel.text(`${data[0].Country}, ${data[0].Year}`);
   // Add domains
   y.domain([
     d3.min(data, (d) => Number(d.Temperature)) < 0 ? -30 : 0,
