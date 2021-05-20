@@ -117,6 +117,7 @@ function updateChart(data) {
   // Add line and area
   linePath
     .merge(linePath)
+    .transition(trans)
     .attr("fill", "none")
     .attr("stroke", "#8d99ae")
     .attr("stroke-width", 1.5)
@@ -131,9 +132,9 @@ function updateChart(data) {
 
   areaPath
     .merge(areaPath)
+    .transition(trans)
     .attr("fill", "url(#temperature-gradient)")
     .attr("opacity", 0.8)
-    .transition(trans)
     .attr("d", area);
 }
 
