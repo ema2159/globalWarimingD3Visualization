@@ -3,7 +3,7 @@ const MARGIN = {LEFT: 100, RIGHT: 20, TOP: 20, BOTTOM: 100};
 const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT;
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 
-let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup;
+let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup, timeParser, dateRange;
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -38,8 +38,26 @@ function initChart(canvasElement) {
     .text("Temperature (Celsius)");
 
   // Scales
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  timeParser = d3.timeParse("%b");
+  dateRange = monthNames.map((month) => timeParser(month));
+
   x = d3.scaleTime().range([0, WIDTH]);
   y = d3.scaleLinear().range([HEIGHT, 0]);
+  x.domain(d3.extent(dateRange));
 
   // Axes initialization
   xAxisGroup = g
@@ -48,6 +66,13 @@ function initChart(canvasElement) {
     .attr("transform", `translate(0, ${HEIGHT})`);
 
   yAxisGroup = g.append("g").attr("class", "y axis");
+
+  // Add x axis
+  const xAxisCall = d3
+    .axisBottom(x)
+    .ticks(d3.timeMonth, 1)
+    .tickFormat(d3.timeFormat("%b"));
+  xAxisGroup.call(xAxisCall);
 }
 
 function updateChart(data) {
@@ -55,9 +80,6 @@ function updateChart(data) {
 
   xLabel.text(`Year ${data[0].Year}`);
   // Add domains
-  const timeParser = d3.timeParse("%b");
-  const dateRange = data.map((d) => timeParser(d.Statistics.slice(0, 3)));
-  x.domain(d3.extent(dateRange));
   y.domain([
     d3.min(data, (d) => Number(d.Temperature)) < 0 ? -30 : 0,
     30
@@ -78,13 +100,7 @@ function updateChart(data) {
     .y0(y(0))
     .y1((d) => y(d.Temperature));
 
-  // Add axes
-  const xAxisCall = d3
-    .axisBottom(x)
-    .ticks(d3.timeMonth, 1)
-    .tickFormat(d3.timeFormat("%b"));
-  xAxisGroup.call(xAxisCall);
-
+  // Add y axis
   const yAxisCall = d3.axisLeft(y);
   yAxisGroup.call(yAxisCall);
 
