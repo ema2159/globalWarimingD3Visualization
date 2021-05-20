@@ -24,36 +24,39 @@ function initChart(canvasElement) {
 
   colorScale = d3.scaleLinear().domain([-30, 30]).range(["#3C81B7", "#dc2f02"]);
 
-  g = svg.append("g").attr("class", "key").attr("transform", "translate(0,40)");
+  const legend = g.append("defs")
+      .append("svg:linearGradient")
+      .attr("id", "gradient")
+      .attr("x1", "100%")
+      .attr("y1", "0%")
+      .attr("x2", "100%")
+      .attr("y2", "100%")
+      .attr("spreadMethod", "pad");
 
-  // g.selectAll("rect")
-  //   .data(colorScale.range().map(function(d) {
-  //     d = colorScale.invertExtent(d);
-  //     if (d[0] == null) d[0] = x.domain()[0];
-  //     if (d[1] == null) d[1] = x.domain()[1];
-  //     return d;
-  //   }))
-  //   .enter().append("rect")
-  //   .attr("height", 8)
-  //   .attr("x", function(d) { return x(d[0]); })
-  //   .attr("width", function(d) { return x(d[1]) - x(d[0]); })
-  //   .attr("fill", function(d) { return colorScale(d[0]); });
+  legend.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", "#dc2f02")
+    .attr("stop-opacity", 1);
 
-  // g.append("text")
-  //   .attr("class", "caption")
-  //   .attr("x", x.range()[0])
-  //   .attr("y", -6)
-  //   .attr("fill", "#000")
-  //   .attr("text-anchor", "start")
-  //   .attr("font-weight", "bold")
-  //   .text("Temperature");
+  legend.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#3C81B7")
+    .attr("stop-opacity", 1);
 
-  // g.call(d3.axisBottom(x)
-  //        .tickSize(13)
-  //        .tickFormat(function(x, i) { return i ? x : x + "℃"; })
-  //        .tickValues(colorScale.domain()))
-  //   .select(".domain")
-  //   .remove();
+  var w = 110, h = 300;
+  const y = d3.scaleLinear().domain([-30, 30]).range([h, 0]);
+  g.append("rect")
+    .attr("width", w - 100)
+    .attr("height", h)
+    .style("fill", "url(#gradient)")
+    .attr("transform", "translate(0,200)");
+
+  var yAxis = d3.axisRight(y);
+
+  g.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(10,200)")
+    .call(yAxis)
 }
 
 function updateChart(topo, data, month) {
