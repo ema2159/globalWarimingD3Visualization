@@ -2,10 +2,31 @@ import * as areaChart from "./areaChart.js";
 import * as polarArea from "./polarArea.js";
 import * as choroplethMap from "./choroplethMap.js";
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
-let country = "ARG";
+let country = "CAN";
 let year = 1901;
 let month = 0;
+
+// Add month names to months drop down menu
+monthNames.forEach(month => {
+  document.getElementById('month-list').innerHTML += (
+    `<li><a class="dropdown-item" href="#">${month}</a></li>`
+  );
+});
 
 areaChart.initChart("#areaChart");
 polarArea.initChart("#polarArea");
