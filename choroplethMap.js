@@ -2,7 +2,7 @@
 const WIDTH = 1400;
 const HEIGHT = 800;
 
-let svg, g, path, projection, x, colorScale;
+let svg, g, path, projection, colorScale;
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -24,6 +24,7 @@ function initChart(canvasElement) {
 
   colorScale = d3.scaleLinear().domain([-30, 30]).range(["#3C81B7", "#dc2f02"]);
 
+  // Legend
   const legend = g.append("defs")
       .append("svg:linearGradient")
       .attr("id", "gradient")
@@ -43,7 +44,7 @@ function initChart(canvasElement) {
     .attr("stop-color", "#3C81B7")
     .attr("stop-opacity", 1);
 
-  var w = 110, h = 300;
+  const w = 110, h = 300;
   const y = d3.scaleLinear().domain([-30, 30]).range([h, 0]);
   g.append("rect")
     .attr("width", w - 100)
