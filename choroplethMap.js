@@ -2,7 +2,21 @@
 const WIDTH = 1400;
 const HEIGHT = 800;
 
-let svg, g, path, projection, colorScale;
+let svg, g, path, projection, colorScale, title;
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -13,6 +27,15 @@ function initChart(canvasElement) {
     .attr("height", HEIGHT);
 
   g = svg.append("g");
+
+  // Labels
+  title = g
+    .append("text")
+    .attr("class", "x-label")
+    .attr("x", WIDTH / 2)
+    .attr("y", HEIGHT - 100)
+    .attr("font-size", "20px")
+    .attr("text-anchor", "middle");
 
   // Map and projection
   path = d3.geoPath();
@@ -62,6 +85,8 @@ function initChart(canvasElement) {
 
 function updateChart(topo, data, month) {
   const trans = d3.transition().duration(100);
+  const currentYear = data.values().next().value[0].Year;
+  title.text(`${monthNames[month]}, ${currentYear}`);
 
   // Interactivity
   let mouseOver = function(event) {
