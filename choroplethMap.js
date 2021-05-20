@@ -22,7 +22,7 @@ function initChart(canvasElement) {
     .center([0, 0])
     .translate([WIDTH / 2, HEIGHT / 2]);
 
-  colorScale = d3.scaleLinear().domain([-30, 25]).range(["#3C81B7", "#CE241C"]);
+  colorScale = d3.scaleLinear().domain([-30, 30]).range(["#3C81B7", "#dc2f02"]);
 
   g = svg.append("g").attr("class", "key").attr("transform", "translate(0,40)");
 
@@ -68,7 +68,7 @@ function updateChart(topo, data, month) {
     .merge(choroMap)
     .transition(trans)
     // draw each country
-    .attr("d", d3.geoPath().projection(projection))
+    .attr("d", path.projection(projection))
     // set the color of each country
     .attr("fill", function (d) {
       d.total = data.get(d.properties["iso_a3"]);
