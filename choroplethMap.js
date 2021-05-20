@@ -58,14 +58,46 @@ function initChart(canvasElement) {
 
 function updateChart(topo, data, month) {
   const trans = d3.transition().duration(100);
+
+  // Interactivity
+  let mouseOver = function(event) {
+    d3.selectAll(".Country")
+      .transition()
+      .duration(200)
+      .style("opacity", .5)
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style("opacity", 1)
+      .style("stroke", "black")
+  }
+
+  let mouseLeave = function(event) {
+    d3.selectAll(".Country")
+      .transition()
+      .duration(200)
+      .style("opacity", 1)
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style("stroke", "none")
+  }
+
+  // Draw map
+  // Join
   const choroMap = g.selectAll("path").data(topo.features);
 
+  // Exit
   choroMap.exit().remove();
-  // Draw the map
+
+  // Update
   choroMap
     .enter()
     .append("path")
     .merge(choroMap)
+    .attr("class", function (d) {return "Country"})
+    .on("mouseover", mouseOver)
+    .on("mouseleave", mouseLeave)
     .transition(trans)
     // draw each country
     .attr("d", path.projection(projection))
