@@ -95,7 +95,7 @@ function updateChart(topo, data, month) {
     .enter()
     .append("path")
     .merge(choroMap)
-    .attr("class", function (d) {return "Country"})
+    .attr("class", "Country")
     .on("mouseover", mouseOver)
     .on("mouseleave", mouseLeave)
     .transition(trans)
