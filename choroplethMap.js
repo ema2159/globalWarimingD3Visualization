@@ -12,24 +12,19 @@ function initChart(canvasElement) {
     .attr("width", WIDTH)
     .attr("height", HEIGHT);
 
+  g = svg.append("g");
+
   // Map and projection
   path = d3.geoPath();
-  projection = d3.geoEqualEarth()
-    .scale(200)
-    .center([0,20])
+  projection = d3
+    .geoEqualEarth()
+    .scale(300)
+    .center([0, 20])
     .translate([WIDTH / 2, HEIGHT / 2]);
 
-  x = d3.scaleLinear()
-    .domain([1, 10])
-    .rangeRound([600, 860]);
+  colorScale = d3.scaleLinear().domain([-30, 25]).range(["#3C81B7", "#CE241C"]);
 
-  colorScale = d3.scaleLinear()
-  .domain([-30, 30])
-  .range(["#3C81B7", "#CE241C"]);
-  
-  g = svg.append("g")
-    .attr("class", "key")
-    .attr("transform", "translate(0,40)");
+  g = svg.append("g").attr("class", "key").attr("transform", "translate(0,40)");
 
   // g.selectAll("rect")
   //   .data(colorScale.range().map(function(d) {
@@ -61,22 +56,24 @@ function initChart(canvasElement) {
   //   .remove();
 }
 
-function updateChart(topo, data) {
+function updateChart(topo, data, month) {
+  const trans = d3.transition().duration(100);
+  const choroMap = g.selectAll("path").data(topo.features);
+
+  choroMap.exit().remove();
   // Draw the map
-  svg.append("g")
-    .selectAll("path")
-    .data(topo.features)
+  choroMap
     .enter()
     .append("path")
-  // draw each country
-    .attr("d", d3.geoPath()
-          .projection(projection)
-         )
-  // set the color of each country
+    .merge(choroMap)
+    .transition(trans)
+    // draw each country
+    .attr("d", d3.geoPath().projection(projection))
+    // set the color of each country
     .attr("fill", function (d) {
-      d.total = data.get(d.properties["iso_a3"]) || [{Temperature: 20}];
-      if(d.properties["iso_a3"]==="GHA") console.log(d);
-      return colorScale(d.total[0].Temperature);
+      d.total = data.get(d.properties["iso_a3"]);
+
+      return d.total ? colorScale(d.total[month].Temperature) : 30;
     });
 }
 
