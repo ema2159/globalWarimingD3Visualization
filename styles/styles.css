@@ -13,10 +13,10 @@
   /* padding: 100px; */
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 #chartContainer {
-  padding: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;

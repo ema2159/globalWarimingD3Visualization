@@ -1,6 +1,6 @@
 // Plot constants
 const WIDTH = 1400;
-const HEIGHT = 900;
+const HEIGHT = 800;
 
 let svg, g, path, projection, x, colorScale;
 
@@ -18,8 +18,8 @@ function initChart(canvasElement) {
   path = d3.geoPath();
   projection = d3
     .geoEqualEarth()
-    .scale(300)
-    .center([0, 20])
+    .scale(250)
+    .center([0, 0])
     .translate([WIDTH / 2, HEIGHT / 2]);
 
   colorScale = d3.scaleLinear().domain([-30, 25]).range(["#3C81B7", "#CE241C"]);
