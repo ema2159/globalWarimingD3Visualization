@@ -2,6 +2,11 @@
   --syntax_normal: #1b1e23;
 }
 
+body {
+  background-color: #f0f0f0;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+}
+
 #outerContainer {
   /* padding: 100px; */
   display: flex;
