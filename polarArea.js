@@ -118,16 +118,44 @@ function initChart(canvasElement) {
 function updateChart(data) {
   const trans = d3.transition().duration(400);
 
+  // Interactivity
+  let mouseOver = function(event) {
+    d3.selectAll(".Bar")
+      .transition()
+      .duration(200)
+      .style("opacity", .5)
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style("opacity", 1)
+      .style("stroke", "black")
+  }
+
+  let mouseLeave = function(event) {
+    d3.selectAll(".Bar")
+      .transition()
+      .duration(200)
+      .style("opacity", 1)
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style("stroke", "none")
+  }
+
   const bars = g.selectAll("path").data(data);
 
   bars.exit().remove();
 
   // Add bars
+  // Join
   bars
     .enter()
     .append("path")
     .lower()
     .merge(bars)
+    .attr("class", "Bar")
+    .on("mouseover", mouseOver)
+    .on("mouseleave", mouseLeave)
     .transition(trans)
     .attr("fill", (d) => colorScale(d.Temperature))
     .attr("opacity", 0.8)
