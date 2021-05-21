@@ -5,7 +5,19 @@ const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 const INNERRADIUS = 60;
 const OUTERRADIUS = Math.min(WIDTH, HEIGHT) / 2;
 
-let svg, g, x, y, colorScale, xAxisGroup, yAxisGroup, title, subtitle, tooltip, tipMonth, hovMonth, tipData;
+let svg,
+  g,
+  x,
+  y,
+  colorScale,
+  xAxisGroup,
+  yAxisGroup,
+  title,
+  subtitle,
+  tooltip,
+  tipMonth,
+  hovMonth,
+  tipData;
 let hovered = false;
 const monthNames = [
   "Jan",
@@ -46,7 +58,10 @@ function initChart(canvasElement) {
   y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-40, 35]);
 
   // Color scaleBand
-  colorScale = d3.scaleSqrt().domain([-30, 0, 35]).range(["#1788de", "#3C81B7", "#CE241C"]);
+  colorScale = d3
+    .scaleSqrt()
+    .domain([-30, 0, 35])
+    .range(["#1788de", "#3C81B7", "#CE241C"]);
 
   // Axes initialization
   // Y axis
@@ -64,7 +79,7 @@ function initChart(canvasElement) {
   yTicks
     .append("text")
     .attr("y", function (d) {
-      return -y(d+3);
+      return -y(d + 3);
     })
     .attr("dy", "0.35em")
     .text(function (d) {
@@ -115,13 +130,15 @@ function initChart(canvasElement) {
     .style("font-size", 10)
     .attr("opacity", 0.6);
 
-  title = g.append("g")
+  title = g
+    .append("g")
     .attr("class", "title")
     .append("text")
     .attr("dy", "0.2em")
     .attr("text-anchor", "middle");
 
-  subtitle = g.append("text")
+  subtitle = g
+    .append("text")
     .attr("dy", "1.3em")
     .attr("text-anchor", "middle")
     .attr("opacity", 0.6);
@@ -133,11 +150,9 @@ function initChart(canvasElement) {
 function updateChart(data) {
   const trans = d3.transition().duration(400);
 
-  title
-    .text(data[0].ISO3);
+  title.text(data[0].ISO3);
 
-  subtitle
-    .text(data[0].Year);
+  subtitle.text(data[0].Year);
 
   const bars = g.selectAll("path").data(data);
 
@@ -151,43 +166,33 @@ function updateChart(data) {
     .lower()
     .merge(bars)
     .attr("class", "Bar")
-    .on("mousemove", function(event, d) {
+    .on("mousemove", function (event, d) {
       hovered = true;
       tipMonth = d.Statistics.slice(0, 3);
       hovMonth = monthNames.findIndex((month) => month == tipMonth);
-      tipData = hovMonth != -1 ? data[hovMonth] : {Statistics:"", Temperature: ""};
+      tipData =
+        hovMonth != -1 ? data[hovMonth] : {Statistics: "", Temperature: ""};
       tooltip.html(tipData.Statistics + "<br/>" + tipData.Temperature + "℃");
       tooltip
-        .style("left", (event.pageX + 10) + "px")
-        .style("top", (event.pageY - 28) + "px")
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 28 + "px")
         .transition()
         .duration(100)
-        .style("opacity", .9)
+        .style("opacity", 0.9)
         .style("font-size", "10px");
-      d3.selectAll(".Bar")
-        .transition()
-        .duration(50)
-        .style("opacity", .5)
+      d3.selectAll(".Bar").transition().duration(50).style("opacity", 0.5);
       d3.select(this)
         .transition()
         .duration(50)
         .style("opacity", 1)
-        .style("stroke", "black")
+        .style("stroke", "black");
     })
-    .on("mouseleave", function(event) {
+    .on("mouseleave", function (event) {
       hovered = false;
-      d3.selectAll(".Bar")
-        .transition()
-        .duration(50)
-        .style("opacity", 1)
-      d3.select(this)
-        .transition()
-        .duration(50)
-        .style("stroke", "none");
+      d3.selectAll(".Bar").transition().duration(50).style("opacity", 1);
+      d3.select(this).transition().duration(50).style("stroke", "none");
       // Tooltip
-      tooltip.transition()
-        .duration(100)
-        .style("opacity", 0);
+      tooltip.transition().duration(100).style("opacity", 0);
     })
     .transition(trans)
     .attr("fill", (d) => colorScale(d.Temperature))
@@ -210,9 +215,10 @@ function updateChart(data) {
         .padRadius(INNERRADIUS)
     );
   // Update tooltip data
-  if(hovered) {
+  if (hovered) {
     hovMonth = monthNames.findIndex((month) => month == tipMonth);
-    tipData = hovMonth != -1 ? data[hovMonth] : {Statistics:"", Temperature: ""};
+    tipData =
+      hovMonth != -1 ? data[hovMonth] : {Statistics: "", Temperature: ""};
     tooltip.html(tipData.Statistics + "<br/>" + tipData.Temperature + "℃");
   }
 }

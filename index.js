@@ -19,7 +19,7 @@ const monthNames = [
 
 const firstYear = 1901;
 const lastYear = 2020;
-let country = "NZL";
+let country = "RUS";
 let year = firstYear;
 let month = 0;
 
@@ -36,7 +36,7 @@ choroplethMap.initChart("#choroplethMap");
 // Datasets to load
 let dataPromises = [
   d3.csv("data/temp-1901-2020-all.csv"),
-  d3.json("data/world.geo.json")
+  d3.json("data/world.geo.json"),
 ];
 
 // Load datasets and start visualization
@@ -44,8 +44,12 @@ Promise.all(dataPromises).then(function (data) {
   let tempData = data[0];
   let topoData = data[1];
   // Group data per country and per year
-  tempData = d3.group(tempData, (d) => d.Year, (d) => d.ISO3);
-  
+  tempData = d3.group(
+    tempData,
+    (d) => d.Year,
+    (d) => d.ISO3
+  );
+
   function updateCharts() {
     const yearData = tempData.get(String(year));
     const countryData = yearData.get(country);
@@ -59,84 +63,86 @@ Promise.all(dataPromises).then(function (data) {
     year = year < lastYear ? year + 1 : firstYear;
     slider.value = year;
     updateCharts();
-  }, 400)
+  }, 400);
 
   // UI
   // Slider
   let moving = true;
-  slider.addEventListener("input", event => {
-    if(moving) {
+  slider.addEventListener("input", (event) => {
+    if (moving) {
       interval.stop();
     }
     year = +slider.value;
     updateCharts();
   });
-  slider.addEventListener("pointerup", event => {
-    if(moving) {
+  slider.addEventListener("pointerup", (event) => {
+    if (moving) {
       interval = d3.interval(() => {
         year = year < lastYear ? year + 1 : firstYear;
         slider.value = year;
         updateCharts();
-      }, 400)
+      }, 400);
     }
   });
   // Play/pause button
   // document.getElementById('month-list').addEventListener();
   const playButton = d3.select("#play-button");
-  playButton
-    .on("click", function() {
-      let button = d3.select(this);
-      if (button.text() == "Pause") {
-        moving = false;
-        interval.stop();
-        button.text("Play");
-      } else {
-        moving = true;
-        interval = d3.interval(() => {
-          year = year < lastYear ? year + 1 : firstYear;
-          slider.value = year;
-          updateCharts();
-        }, 400)
-        button.text("Pause");
-      }
-    })
+  playButton.on("click", function () {
+    let button = d3.select(this);
+    if (button.text() == "Pause") {
+      moving = false;
+      interval.stop();
+      button.text("Play");
+    } else {
+      moving = true;
+      interval = d3.interval(() => {
+        year = year < lastYear ? year + 1 : firstYear;
+        slider.value = year;
+        updateCharts();
+      }, 400);
+      button.text("Pause");
+    }
+  });
   // Add month names to months drop down menu
   monthNames.forEach((month, i) => {
-    document.getElementById('month-list').innerHTML += (
-      `<li><a class="dropdown-item" value=${i}>${month}</a></li>`
-    );
+    document.getElementById(
+      "month-list"
+    ).innerHTML += `<li><a class="dropdown-item" value=${i}>${month}</a></li>`;
   });
   // Change months according to month menu
-  document.querySelectorAll('#month-list li').forEach(item =>
-    item.addEventListener("click", event => {
+  document.querySelectorAll("#month-list li").forEach((item) =>
+    item.addEventListener("click", (event) => {
       month = event.target.getAttribute("value");
       updateCharts();
-    }));
+    })
+  );
 
   // Add years to years drop down menu
-  for(let year of tempData.keys()) {
-    document.getElementById('year-list').innerHTML += (
-      `<li><a class="dropdown-item">${year}</a></li>`
-    );
-  };
+  for (let year of tempData.keys()) {
+    document.getElementById(
+      "year-list"
+    ).innerHTML += `<li><a class="dropdown-item">${year}</a></li>`;
+  }
   // Change year according to year menu
-  document.querySelectorAll('#year-list li').forEach(item =>
-    item.addEventListener("click", event => {
+  document.querySelectorAll("#year-list li").forEach((item) =>
+    item.addEventListener("click", (event) => {
       year = +event.target.innerHTML;
       updateCharts();
-    }));
+    })
+  );
 
   // Add countries to countries drop down menu
-  for(let [iso, isoData] of tempData.get(String(firstYear))) {
+  for (let [iso, isoData] of tempData.get(String(firstYear))) {
     const countryName = isoData[0].Country;
-    document.getElementById('country-list').innerHTML += (
-      `<li><a class="dropdown-item" value=${iso}>${countryName}</a></li>`
-    );
-  };
+    document.getElementById(
+      "country-list"
+    ).innerHTML += `<li><a class="dropdown-item" value=${iso}>${countryName}</a></li>`;
+  }
   // Change country according to country menu
-  document.querySelectorAll('#country-list li').forEach(item =>
-    item.addEventListener("click", event => {
+  document.querySelectorAll("#country-list li").forEach((item) =>
+    item.addEventListener("click", (event) => {
       country = event.target.getAttribute("value");
       updateCharts();
-    }));
+    })
+  );
 });

@@ -3,7 +3,17 @@ const MARGIN = {LEFT: 100, RIGHT: 20, TOP: 20, BOTTOM: 100};
 const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT;
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 
-let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup, timeParser, dateRange, gradient;
+let svg,
+  g,
+  xLabel,
+  yLabel,
+  x,
+  y,
+  xAxisGroup,
+  yAxisGroup,
+  timeParser,
+  dateRange,
+  gradient;
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -60,7 +70,8 @@ function initChart(canvasElement) {
   x.domain(d3.extent(dateRange));
   y.domain([-30, 35]);
 
-  gradient = g.append("linearGradient")
+  gradient = g
+    .append("linearGradient")
     .attr("id", "temperature-gradient")
     .attr("gradientUnits", "userSpaceOnUse")
     .attr("x1", 0)
@@ -105,10 +116,7 @@ function updateChart(data) {
 
   xLabel.text(`${data[0].Country}, ${data[0].Year}`);
   // Add domains
-  y.domain([
-    d3.min(data, (d) => Number(d.Temperature)) < 0 ? -30 : 0,
-    35
-  ]);
+  y.domain([d3.min(data, (d) => Number(d.Temperature)) < 0 ? -30 : 0, 35]);
 
   // Line and area generator
   let curve = d3.curveMonotoneX;
@@ -129,12 +137,9 @@ function updateChart(data) {
   const yAxisCall = d3.axisLeft(y);
   yAxisGroup.call(yAxisCall);
 
-  gradient
-    .attr("y1", y(-30))
-    .attr("y2", y(35));
+  gradient.attr("y1", y(-30)).attr("y2", y(35));
 
-  const linePath = g.selectAll("path.plot")
-        .datum(data);
+  const linePath = g.selectAll("path.plot").datum(data);
 
   linePath.exit().remove();
 
@@ -149,8 +154,7 @@ function updateChart(data) {
     .attr("stroke-linecap", "round")
     .attr("d", line);
 
-  const areaPath = g.selectAll("path.plot")
-    .datum(data);
+  const areaPath = g.selectAll("path.plot").datum(data);
 
   areaPath.exit().remove();
 

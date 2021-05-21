@@ -9,28 +9,25 @@ body {
 
 /* Scroll menu */
 .scrollable-menu {
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
 }
 
 /* Scroll bar */
-.scrollable-menu::-webkit-scrollbar-track
-{
+.scrollable-menu::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
-.scrollable-menu::-webkit-scrollbar
-{
+.scrollable-menu::-webkit-scrollbar {
   width: 12px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 
-.scrollable-menu::-webkit-scrollbar-thumb
-{
+.scrollable-menu::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #555;
 }
 
@@ -53,7 +50,7 @@ body {
 }
 
 .slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
+  -webkit-appearance: none; /* Override default CSS styles */
   appearance: none;
   width: 30%; /* Full-width */
   height: 10px; /* Specified height */
@@ -61,8 +58,8 @@ body {
   background: #d3d3d3; /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
   margin-bottom: 10px;
 }
 
@@ -92,7 +89,7 @@ body {
   width: 130px;
   height: 50px;
   padding: 10px;
-  background: #2F2F2F;
+  background: #2f2f2f;
   color: #f0f0f0;
   border: 0px;
   border-radius: 8px;
