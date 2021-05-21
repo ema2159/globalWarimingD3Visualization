@@ -47,7 +47,7 @@ Promise.all(dataPromises).then(function (data) {
   polarArea.updateChart(countryData, month);
   choroplethMap.updateChart(topoData, yearData, month);
 
-  d3.interval(() => {
+  let interval = d3.interval(() => {
     year = year < lastYear ? year + 1 : firstYear;
     yearData = tempData.get(String(year));
     countryData = yearData.get(country);
@@ -57,6 +57,34 @@ Promise.all(dataPromises).then(function (data) {
   }, 400)
 
   // UI
+  // Play/pause button
+  // document.getElementById('month-list').addEventListener();
+  let moving;
+  const playButton = d3.select("#play-button");
+  playButton
+    .on("click", function() {
+      let button = d3.select(this);
+      if (button.text() == "Pause") {
+        moving = false;
+        interval = d3.interval(() => {
+          year = year < lastYear ? year + 1 : firstYear;
+          yearData = tempData.get(String(year));
+          countryData = yearData.get(country);
+          areaChart.updateChart(countryData);
+          polarArea.updateChart(countryData);
+          choroplethMap.updateChart(topoData, yearData, month);
+        }, 400)
+        // clearInterval(timer);
+        // timer = 0;
+        button.text("Play");
+      } else {
+        interval.stop();
+        moving = true;
+        // timer = setInterval(step, 100);
+        button.text("Pause");
+      }
+      console.log("Slider moving: " + moving);
+    })
   // Add month names to months drop down menu
   monthNames.forEach((month, i) => {
     document.getElementById('month-list').innerHTML += (
