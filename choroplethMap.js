@@ -119,7 +119,7 @@ function updateChart(topo, data, month) {
   // Interactivity
   choroMap
     .on("mousemove", function(event, data) {
-      tipCountry = data.total[0].ISO3; 
+      tipCountry = data.total ? data.total[0].ISO3 : null;
       tooltip
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 28) + "px")
@@ -155,7 +155,7 @@ function updateChart(topo, data, month) {
         .style("opacity", 0);
     });
   // Update tooltip data
-  const tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"", Temperature: ""};
+  const tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"No available data", Temperature: ""};
   tooltip.html(tipData.Country + "<br/>" + tipData.Temperature + "℃")
 }
 
