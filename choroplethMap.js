@@ -118,37 +118,40 @@ function updateChart(topo, data, month) {
 
   // Interactivity
   choroMap
-    .on("mouseover", function(event, data) {
+    .on("mousemove", function(event, data) {
       tipCountry = data.total[0].ISO3; 
-      tooltip.transition()
-        .duration(100)
-        .style("opacity", .9)
+      tooltip
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 28) + "px")
+        .transition()
+        .duration(100)
+        .style("opacity", .9)
         .style("font-size", "10px");
       d3.selectAll(".Country")
         .transition()
-        .duration(100)
+        .duration(50)
         .style("opacity", .5);
       d3.select(this)
         .transition()
-        .duration(200)
+        .duration(50)
         .style("opacity", 1)
-        .style("stroke", "black");
+        .style("stroke", "#0A0A0A")
+        .style("stroke-width", "0.5px")
+      ;
     })
     .on("mouseleave", function(event) {
       // Country highlighting
       d3.selectAll(".Country")
         .transition()
-        .duration(100)
+        .duration(50)
         .style("opacity", 1);
       d3.select(this)
         .transition()
-        .duration(100)
+        .duration(50)
         .style("stroke", "none");
       // Tooltip
       tooltip.transition()
-        .duration(300)
+        .duration(100)
         .style("opacity", 0);
     });
   // Update tooltip data
