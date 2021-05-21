@@ -83,9 +83,7 @@ function initChart(canvasElement) {
     .call(yAxis)
 
   // Tooltip placeholder
-  tooltip = d3.select("body").append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
+  tooltip = d3.select(".mapTooltip");
 }
 
 function updateChart(topo, data, month) {
