@@ -127,6 +127,7 @@ Promise.all(dataPromises).then(function (data) {
   document.querySelectorAll("#year-list li").forEach((item) =>
     item.addEventListener("click", (event) => {
       year = +event.target.innerHTML;
+      slider.value = year;
       updateCharts();
     })
   );
