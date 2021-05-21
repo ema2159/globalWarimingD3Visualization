@@ -41,19 +41,18 @@ Promise.all(dataPromises).then(function (data) {
   // Group data per country and per year
   tempData = d3.group(tempData, (d) => d.Year, (d) => d.ISO3);
   
-  let yearData = tempData.get(String(year));
-  let countryData = yearData.get(country);
-  areaChart.updateChart(countryData);
-  polarArea.updateChart(countryData, month);
-  choroplethMap.updateChart(topoData, yearData, month);
+  function updateCharts() {
+    const yearData = tempData.get(String(year));
+    const countryData = yearData.get(country);
+    areaChart.updateChart(countryData);
+    polarArea.updateChart(countryData, month);
+    choroplethMap.updateChart(topoData, yearData, month);
+  }
+  updateCharts();
 
   let interval = d3.interval(() => {
     year = year < lastYear ? year + 1 : firstYear;
-    yearData = tempData.get(String(year));
-    countryData = yearData.get(country);
-    areaChart.updateChart(countryData);
-    polarArea.updateChart(countryData);
-    choroplethMap.updateChart(topoData, yearData, month);
+    updateCharts();
   }, 400)
 
   // UI
@@ -95,6 +94,7 @@ Promise.all(dataPromises).then(function (data) {
   document.querySelectorAll('#month-list li').forEach(item =>
     item.addEventListener("click", event => {
       month = event.target.getAttribute("value");
+      updateCharts();
     }));
 
   // Add years to years drop down menu
@@ -107,6 +107,7 @@ Promise.all(dataPromises).then(function (data) {
   document.querySelectorAll('#year-list li').forEach(item =>
     item.addEventListener("click", event => {
       year = +event.target.innerHTML;
+      updateCharts();
     }));
 
   // Add countries to countries drop down menu
@@ -120,5 +121,6 @@ Promise.all(dataPromises).then(function (data) {
   document.querySelectorAll('#country-list li').forEach(item =>
     item.addEventListener("click", event => {
       country = event.target.getAttribute("value");
+      updateCharts();
     }));
 });
