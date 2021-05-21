@@ -72,15 +72,28 @@ Promise.all(dataPromises).then(function (data) {
       month = event.target.getAttribute("value");
     }));
 
-  // Add month names to months drop down menu
-  for(year of tempData.keys()) {
+  // Add years to years drop down menu
+  for(let year of tempData.keys()) {
     document.getElementById('year-list').innerHTML += (
       `<li><a class="dropdown-item">${year}</a></li>`
     );
   };
-  // Change months according to month menu
+  // Change year according to year menu
   document.querySelectorAll('#year-list li').forEach(item =>
     item.addEventListener("click", event => {
       year = +event.target.innerHTML;
+    }));
+
+  // Add countries to countries drop down menu
+  for(let [iso, isoData] of tempData.get(String(firstYear))) {
+    const countryName = isoData[0].Country;
+    document.getElementById('country-list').innerHTML += (
+      `<li><a class="dropdown-item" value=${iso}>${countryName}</a></li>`
+    );
+  };
+  // Change country according to country menu
+  document.querySelectorAll('#country-list li').forEach(item =>
+    item.addEventListener("click", event => {
+      country = event.target.getAttribute("value");
     }));
 });
