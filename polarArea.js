@@ -5,7 +5,7 @@ const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 const INNERRADIUS = 60;
 const OUTERRADIUS = Math.min(WIDTH, HEIGHT) / 2;
 
-let svg, g, xLabel, yLabel, x, y, colorScale, xAxisGroup, yAxisGroup;
+let svg, g, xLabel, yLabel, x, y, colorScale, xAxisGroup, yAxisGroup, title;
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -113,6 +113,12 @@ function initChart(canvasElement) {
     })
     .style("font-size", 10)
     .attr("opacity", 0.6);
+
+  title = g.append("g")
+    .attr("class", "title")
+    .append("text")
+    .attr("dy", "0.2em")
+    .attr("text-anchor", "middle");
 }
 
 function updateChart(data) {
@@ -141,6 +147,9 @@ function updateChart(data) {
       .duration(200)
       .style("stroke", "none")
   }
+
+  title
+    .text(data[0].ISO3)
 
   const bars = g.selectAll("path").data(data);
 
