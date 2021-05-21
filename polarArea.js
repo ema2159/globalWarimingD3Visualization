@@ -42,16 +42,16 @@ function initChart(canvasElement) {
     .range([0, 2 * Math.PI])
     .align(0)
     .domain(monthNames);
-  y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-40, 30]);
+  y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-40, 35]);
 
   // Color scaleBand
-  colorScale = d3.scaleSqrt().domain([-30, 30]).range(["#3C81B7", "#CE241C"]);
+  colorScale = d3.scaleSqrt().domain([-30, 35]).range(["#3C81B7", "#CE241C"]);
 
   // Axes initialization
   // Y axis
   yAxisGroup = g.append("g").attr("class", "y axis");
 
-  const yTicks = yAxisGroup.selectAll("g").data(y.ticks(5)).enter().append("g");
+  const yTicks = yAxisGroup.selectAll("g").data(y.ticks(6)).enter().append("g");
 
   yTicks
     .append("circle")
