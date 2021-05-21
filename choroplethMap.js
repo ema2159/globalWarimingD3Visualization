@@ -2,7 +2,7 @@
 const WIDTH = 1400;
 const HEIGHT = 800;
 
-let svg, g, path, projection, colorScale, title, tooltip, tipCountry;
+let svg, g, path, projection, colorScale, title, tooltip, tipCountry, tipData;
 let hovered = false;
 const monthNames = [
   "January",
@@ -117,9 +117,11 @@ function updateChart(topo, data, month) {
 
   // Interactivity
   choroMap
-    .on("mousemove", function(event, data) {
+    .on("mousemove", function(event, d) {
       hovered = true;
-      tipCountry = data.total ? data.total[0].ISO3 : null;
+      tipCountry = d.total ? d.total[0].ISO3 : null;
+      tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"No available data", Temperature: ""};
+      tooltip.html(tipData.Country + "<br/>" + tipData.Temperature + "℃")
       tooltip
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 28) + "px")
@@ -157,7 +159,7 @@ function updateChart(topo, data, month) {
     });
   // Update tooltip data
   if(hovered) {
-    const tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"No available data", Temperature: ""};
+    tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"No available data", Temperature: ""};
     tooltip.html(tipData.Country + "<br/>" + tipData.Temperature + "℃")
   }
 }
