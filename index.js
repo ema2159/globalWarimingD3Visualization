@@ -17,8 +17,10 @@ const monthNames = [
   "December",
 ];
 
-let country = "CAN";
-let year = 1901;
+const firstYear = 1901;
+const lastYear = 2020;
+let country = "NZL";
+let year = firstYear;
 let month = 0;
 
 // Init charts
@@ -49,7 +51,7 @@ Promise.all(dataPromises).then(function (data) {
   choroplethMap.updateChart(topoData, yearData, month);
 
   d3.interval(() => {
-    year = year < 2020 ? year + 1 : 1901;
+    year = year < lastYear ? year + 1 : firstYear;
     yearData = tempData.get(String(year));
     countryData = yearData.get(country);
     areaChart.updateChart(countryData);
