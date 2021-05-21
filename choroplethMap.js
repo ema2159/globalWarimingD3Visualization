@@ -2,7 +2,7 @@
 const WIDTH = 1400;
 const HEIGHT = 800;
 
-let svg, g, path, projection, colorScale, title, tooltip;
+let svg, g, path, projection, colorScale, title, tooltip, tipCountry;
 const monthNames = [
   "January",
   "February",
@@ -106,13 +106,23 @@ function updateChart(topo, data, month) {
     .append("path")
     .merge(choroMap)
     .attr("class", "Country")
-    // Interactivity
+    .transition(trans)
+    // draw each country
+    .attr("d", path.projection(projection))
+    // set the color of each country
+    .attr("fill", function (d) {
+      d.total = data.get(d.properties["iso_a3"]);
+
+      return d.total ? colorScale(d.total[month].Temperature) : 30;
+    });
+
+  // Interactivity
+  choroMap
     .on("mouseover", function(event, data) {
-      const d = data.total[month];
+      tipCountry = data.total[0].ISO3; 
       tooltip.transition()
         .duration(100)
-        .style("opacity", .9);
-      tooltip.html(d.Country + "<br/>" + d.Temperature + "℃")
+        .style("opacity", .9)
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 28) + "px")
         .style("font-size", "10px");
@@ -140,16 +150,10 @@ function updateChart(topo, data, month) {
       tooltip.transition()
         .duration(300)
         .style("opacity", 0);
-    })
-    .transition(trans)
-    // draw each country
-    .attr("d", path.projection(projection))
-    // set the color of each country
-    .attr("fill", function (d) {
-      d.total = data.get(d.properties["iso_a3"]);
-
-      return d.total ? colorScale(d.total[month].Temperature) : 30;
     });
+  // Update tooltip data
+  const tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"", Temperature: ""};
+  tooltip.html(tipData.Country + "<br/>" + tipData.Temperature + "℃")
 }
 
 export {initChart, updateChart};
