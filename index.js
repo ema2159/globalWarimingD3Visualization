@@ -40,12 +40,9 @@ Promise.all(dataPromises).then(function (data) {
   let topoData = data[1];
   // Group data per country and per year
   tempData = d3.group(tempData, (d) => d.Year, (d) => d.ISO3);
-  console.log(tempData);
   
   let yearData = tempData.get(String(year));
-  console.log(yearData);
   let countryData = yearData.get(country);
-  console.log(countryData);
   areaChart.updateChart(countryData);
   polarArea.updateChart(countryData, month);
   choroplethMap.updateChart(topoData, yearData, month);
