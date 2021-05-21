@@ -35,7 +35,7 @@ function initChart(canvasElement) {
     .attr("font-size", "20px")
     .attr("text-anchor", "middle")
     .attr("transform", "rotate(-90)")
-    .text("Temperature (Celsius)");
+    .text("Temperature (℃)");
 
   // Scales
   const monthNames = [

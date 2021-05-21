@@ -75,7 +75,7 @@ function initChart(canvasElement) {
     .style("fill", "url(#gradient)")
     .attr("transform", "translate(0,200)");
 
-  var yAxis = d3.axisRight(y);
+  var yAxis = d3.axisRight(y).tickFormat(d => d + "℃");
 
   g.append("g")
     .attr("class", "y axis")
