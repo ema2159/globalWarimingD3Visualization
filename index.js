@@ -21,13 +21,7 @@ let country = "CAN";
 let year = 1901;
 let month = 0;
 
-// Add month names to months drop down menu
-monthNames.forEach(month => {
-  document.getElementById('month-list').innerHTML += (
-    `<li><a class="dropdown-item" href="#">${month}</a></li>`
-  );
-});
-
+// Init charts
 areaChart.initChart("#areaChart");
 polarArea.initChart("#polarArea");
 choroplethMap.initChart("#choroplethMap");
@@ -36,8 +30,9 @@ choroplethMap.initChart("#choroplethMap");
 let dataPromises = [
   d3.csv("data/temp-1901-2020-all.csv"),
   d3.json("data/world.geo.json")
-]
+];
 
+// Load datasets and start visualization
 Promise.all(dataPromises).then(function (data) {
   let tempData = data[0];
   let topoData = data[1];
@@ -62,3 +57,16 @@ Promise.all(dataPromises).then(function (data) {
     choroplethMap.updateChart(topoData, yearData, month);
   }, 400)
 });
+
+// UI
+// Add month names to months drop down menu
+monthNames.forEach((month, i) => {
+  document.getElementById('month-list').innerHTML += (
+    `<li value=${i}><a class="dropdown-item" value=${i}>${month}</a></li>`
+  );
+});
+// Change months according to month menu
+document.querySelectorAll('#month-list li').forEach(item =>
+  item.addEventListener("click", event => {
+    month = event.target.getAttribute("value");
+  }));
