@@ -82,7 +82,7 @@ function updateChart(data) {
   // Add domains
   y.domain([
     d3.min(data, (d) => Number(d.Temperature)) < 0 ? -30 : 0,
-    30
+    35
   ]);
 
   // Line and area generator
