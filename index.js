@@ -23,6 +23,11 @@ let country = "NZL";
 let year = firstYear;
 let month = 0;
 
+// Init slider variables
+const slider = document.getElementById("yearSlider");
+slider.min = firstYear;
+slider.max = lastYear;
+
 // Init charts
 areaChart.initChart("#areaChart");
 polarArea.initChart("#polarArea");
@@ -52,13 +57,31 @@ Promise.all(dataPromises).then(function (data) {
 
   let interval = d3.interval(() => {
     year = year < lastYear ? year + 1 : firstYear;
+    slider.value = year;
     updateCharts();
   }, 400)
 
   // UI
+  // Slider
+  let moving = true;
+  slider.addEventListener("input", event => {
+    if(moving) {
+      interval.stop();
+    }
+    year = +slider.value;
+    updateCharts();
+  });
+  slider.addEventListener("pointerup", event => {
+    if(moving) {
+      interval = d3.interval(() => {
+        year = year < lastYear ? year + 1 : firstYear;
+        slider.value = year;
+        updateCharts();
+      }, 400)
+    }
+  });
   // Play/pause button
   // document.getElementById('month-list').addEventListener();
-  let moving;
   const playButton = d3.select("#play-button");
   playButton
     .on("click", function() {
