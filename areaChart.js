@@ -3,7 +3,7 @@ const MARGIN = {LEFT: 100, RIGHT: 20, TOP: 20, BOTTOM: 100};
 const WIDTH = 700 - MARGIN.LEFT - MARGIN.RIGHT;
 const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM;
 
-let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup, timeParser, dateRange;
+let svg, g, xLabel, yLabel, x, y, xAxisGroup, yAxisGroup, timeParser, dateRange, gradient;
 
 function initChart(canvasElement) {
   // Visualization canvas
@@ -58,6 +58,29 @@ function initChart(canvasElement) {
   x = d3.scaleTime().range([0, WIDTH]);
   y = d3.scaleLinear().range([HEIGHT, 0]);
   x.domain(d3.extent(dateRange));
+  y.domain([-30, 35]);
+
+  gradient = g.append("linearGradient")
+    .attr("id", "temperature-gradient")
+    .attr("gradientUnits", "userSpaceOnUse")
+    .attr("x1", 0)
+    .attr("y1", y(-30))
+    .attr("x2", 0)
+    .attr("y2", y(35));
+  gradient
+    .selectAll("stop")
+    .data([
+      {offset: "50%", color: "#3C81B7"},
+      {offset: "70%", color: "#CE241C"},
+    ])
+    .enter()
+    .append("stop")
+    .attr("offset", function (d) {
+      return d.offset;
+    })
+    .attr("stop-color", function (d) {
+      return d.color;
+    });
 
   // Axes initialization
   xAxisGroup = g
@@ -104,26 +127,9 @@ function updateChart(data) {
   const yAxisCall = d3.axisLeft(y);
   yAxisGroup.call(yAxisCall);
 
-  g.append("linearGradient")
-    .attr("id", "temperature-gradient")
-    .attr("gradientUnits", "userSpaceOnUse")
-    .attr("x1", 0)
-    .attr("y1", y(-20))
-    .attr("x2", 0)
-    .attr("y2", y(20))
-    .selectAll("stop")
-    .data([
-      {offset: "45%", color: "#3C81B7"},
-      {offset: "70%", color: "#CE241C"},
-    ])
-    .enter()
-    .append("stop")
-    .attr("offset", function (d) {
-      return d.offset;
-    })
-    .attr("stop-color", function (d) {
-      return d.color;
-    });
+  gradient
+    .attr("y1", y(-30))
+    .attr("y2", y(35));
 
   const linePath = g.selectAll("path.plot")
         .datum(data);
