@@ -99,7 +99,6 @@ Promise.all(dataPromises).then(function (data) {
         }, 400)
         button.text("Pause");
       }
-      console.log("Slider moving: " + moving);
     })
   // Add month names to months drop down menu
   monthNames.forEach((month, i) => {
