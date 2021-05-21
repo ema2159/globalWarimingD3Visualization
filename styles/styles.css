@@ -52,8 +52,7 @@ body {
   align-items: center;
 }
 
-.mapTooltip,
-.polChartTooltip {
+.tooltip {
   position: absolute;
   width: 130px;
   height: 50px;

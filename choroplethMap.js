@@ -3,6 +3,7 @@ const WIDTH = 1400;
 const HEIGHT = 800;
 
 let svg, g, path, projection, colorScale, title, tooltip, tipCountry;
+let hovered = false;
 const monthNames = [
   "January",
   "February",
@@ -83,7 +84,7 @@ function initChart(canvasElement) {
     .call(yAxis)
 
   // Tooltip placeholder
-  tooltip = d3.select(".mapTooltip");
+  tooltip = d3.select(".tooltip");
 }
 
 function updateChart(topo, data, month) {
@@ -117,6 +118,7 @@ function updateChart(topo, data, month) {
   // Interactivity
   choroMap
     .on("mousemove", function(event, data) {
+      hovered = true;
       tipCountry = data.total ? data.total[0].ISO3 : null;
       tooltip
         .style("left", (event.pageX + 10) + "px")
@@ -138,6 +140,7 @@ function updateChart(topo, data, month) {
       ;
     })
     .on("mouseleave", function(event) {
+      hovered = false;
       // Country highlighting
       d3.selectAll(".Country")
         .transition()
@@ -153,8 +156,10 @@ function updateChart(topo, data, month) {
         .style("opacity", 0);
     });
   // Update tooltip data
-  const tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"No available data", Temperature: ""};
-  tooltip.html(tipData.Country + "<br/>" + tipData.Temperature + "℃")
+  if(hovered) {
+    const tipData = tipCountry ? data.get(tipCountry)[month] : {Country:"No available data", Temperature: ""};
+    tooltip.html(tipData.Country + "<br/>" + tipData.Temperature + "℃")
+  }
 }
 
 export {initChart, updateChart};

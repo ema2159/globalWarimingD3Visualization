@@ -6,6 +6,7 @@ const INNERRADIUS = 60;
 const OUTERRADIUS = Math.min(WIDTH, HEIGHT) / 2;
 
 let svg, g, x, y, colorScale, xAxisGroup, yAxisGroup, title, subtitle, tooltip, tipMonth;
+let hovered = false;
 const monthNames = [
   "Jan",
   "Feb",
@@ -126,7 +127,7 @@ function initChart(canvasElement) {
     .attr("opacity", 0.6);
 
   // Tooltip placeholder
-  tooltip = d3.select(".polChartTooltip");
+  tooltip = d3.select(".tooltip");
 }
 
 function updateChart(data) {
@@ -151,6 +152,7 @@ function updateChart(data) {
     .merge(bars)
     .attr("class", "Bar")
     .on("mousemove", function(event, d) {
+      hovered = true;
       tipMonth = d.Statistics.slice(0, 3);
       tooltip
         .style("left", (event.pageX + 10) + "px")
@@ -170,6 +172,7 @@ function updateChart(data) {
         .style("stroke", "black")
     })
     .on("mouseleave", function(event) {
+      hovered = false;
       d3.selectAll(".Bar")
         .transition()
         .duration(50)
@@ -204,9 +207,11 @@ function updateChart(data) {
         .padRadius(INNERRADIUS)
     );
   // Update tooltip data
-  const hovMonth = monthNames.findIndex((month) => month == tipMonth);
-  const tipData = hovMonth != -1 ? data[hovMonth] : {Statistics:"", Temperature: ""};
-  tooltip.html(tipData.Statistics + "<br/>" + tipData.Temperature + "℃");
+  if(hovered) {
+    const hovMonth = monthNames.findIndex((month) => month == tipMonth);
+    const tipData = hovMonth != -1 ? data[hovMonth] : {Statistics:"", Temperature: ""};
+    tooltip.html(tipData.Statistics + "<br/>" + tipData.Temperature + "℃");
+  }
 }
 
 export {initChart, updateChart};
