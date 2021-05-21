@@ -94,11 +94,8 @@ Promise.all(dataPromises).then(function (data) {
         moving = true;
         interval = d3.interval(() => {
           year = year < lastYear ? year + 1 : firstYear;
-          yearData = tempData.get(String(year));
-          countryData = yearData.get(country);
-          areaChart.updateChart(countryData);
-          polarArea.updateChart(countryData);
-          choroplethMap.updateChart(topoData, yearData, month);
+          slider.value = year;
+          updateCharts();
         }, 400)
         button.text("Pause");
       }
