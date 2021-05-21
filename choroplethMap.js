@@ -2,7 +2,7 @@
 const WIDTH = 1400;
 const HEIGHT = 800;
 
-let svg, g, path, projection, colorScale, title;
+let svg, g, path, projection, colorScale, title, tooltip;
 const monthNames = [
   "January",
   "February",
@@ -81,36 +81,17 @@ function initChart(canvasElement) {
     .attr("class", "y axis")
     .attr("transform", "translate(10,200)")
     .call(yAxis)
+
+  // Tooltip placeholder
+  tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
 }
 
 function updateChart(topo, data, month) {
   const trans = d3.transition().duration(100);
   const currentYear = data.values().next().value[0].Year;
   title.text(`${monthNames[month]}, ${currentYear}`);
-
-  // Interactivity
-  let mouseOver = function(event) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .5)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("opacity", 1)
-      .style("stroke", "black")
-  }
-
-  let mouseLeave = function(event) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", 1)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("stroke", "none")
-  }
 
   // Draw map
   // Join
@@ -125,8 +106,41 @@ function updateChart(topo, data, month) {
     .append("path")
     .merge(choroMap)
     .attr("class", "Country")
-    .on("mouseover", mouseOver)
-    .on("mouseleave", mouseLeave)
+    // Interactivity
+    .on("mouseover", function(event, data) {
+      const d = data.total[month];
+      tooltip.transition()
+        .duration(100)
+        .style("opacity", .9);
+      tooltip.html(d.Country + "<br/>" + d.Temperature + "℃")
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 28) + "px")
+        .style("font-size", "10px");
+      d3.selectAll(".Country")
+        .transition()
+        .duration(100)
+        .style("opacity", .5);
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("opacity", 1)
+        .style("stroke", "black");
+    })
+    .on("mouseleave", function(event) {
+      // Country highlighting
+      d3.selectAll(".Country")
+        .transition()
+        .duration(100)
+        .style("opacity", 1);
+      d3.select(this)
+        .transition()
+        .duration(100)
+        .style("stroke", "none");
+      // Tooltip
+      tooltip.transition()
+        .duration(300)
+        .style("opacity", 0);
+    })
     .transition(trans)
     // draw each country
     .attr("d", path.projection(projection))
