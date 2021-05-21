@@ -68,7 +68,7 @@ function initChart(canvasElement) {
     .attr("stop-opacity", 1);
 
   const w = 110, h = 300;
-  const y = d3.scaleLinear().domain([-30, 30]).range([h, 0]);
+  const y = d3.scaleLinear().domain([-30, 35]).range([h, 0]);
   g.append("rect")
     .attr("width", w - 100)
     .attr("height", h)
