@@ -65,6 +65,10 @@ Promise.all(dataPromises).then(function (data) {
       let button = d3.select(this);
       if (button.text() == "Pause") {
         moving = false;
+        interval.stop();
+        button.text("Play");
+      } else {
+        moving = true;
         interval = d3.interval(() => {
           year = year < lastYear ? year + 1 : firstYear;
           yearData = tempData.get(String(year));
@@ -73,13 +77,6 @@ Promise.all(dataPromises).then(function (data) {
           polarArea.updateChart(countryData);
           choroplethMap.updateChart(topoData, yearData, month);
         }, 400)
-        // clearInterval(timer);
-        // timer = 0;
-        button.text("Play");
-      } else {
-        interval.stop();
-        moving = true;
-        // timer = setInterval(step, 100);
         button.text("Pause");
       }
       console.log("Slider moving: " + moving);
