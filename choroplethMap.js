@@ -45,7 +45,7 @@ function initChart(canvasElement) {
     .center([0, 0])
     .translate([WIDTH / 2, HEIGHT / 2]);
 
-  colorScale = d3.scaleLinear().domain([-30, 30]).range(["#3C81B7", "#dc2f02"]);
+  colorScale = d3.scaleLinear().domain([-30, 0, 35]).range(["#1788de","#3C81B7", "#dc2f02"]);
 
   // Legend
   const legend = g.append("defs")

@@ -67,9 +67,11 @@ function initChart(canvasElement) {
     .attr("y1", y(-30))
     .attr("x2", 0)
     .attr("y2", y(35));
+
   gradient
     .selectAll("stop")
     .data([
+      {offset: "0%", color: "#1788de"},
       {offset: "50%", color: "#3C81B7"},
       {offset: "70%", color: "#CE241C"},
     ])

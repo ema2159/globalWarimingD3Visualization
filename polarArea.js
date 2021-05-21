@@ -45,7 +45,7 @@ function initChart(canvasElement) {
   y = d3.scaleLinear().range([INNERRADIUS, OUTERRADIUS]).domain([-40, 35]);
 
   // Color scaleBand
-  colorScale = d3.scaleSqrt().domain([-30, 35]).range(["#3C81B7", "#CE241C"]);
+  colorScale = d3.scaleSqrt().domain([-30, 0, 35]).range(["#1788de", "#3C81B7", "#CE241C"]);
 
   // Axes initialization
   // Y axis
@@ -185,7 +185,7 @@ function updateChart(data) {
     })
     .transition(trans)
     .attr("fill", (d) => colorScale(d.Temperature))
-    .attr("opacity", 0.8)
+    .attr("opacity", 1)
     .attr(
       "d",
       d3
