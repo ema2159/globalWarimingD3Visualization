@@ -56,17 +56,29 @@ Promise.all(dataPromises).then(function (data) {
     polarArea.updateChart(countryData);
     choroplethMap.updateChart(topoData, yearData, month);
   }, 400)
-});
 
-// UI
-// Add month names to months drop down menu
-monthNames.forEach((month, i) => {
-  document.getElementById('month-list').innerHTML += (
-    `<li value=${i}><a class="dropdown-item" value=${i}>${month}</a></li>`
-  );
+  // UI
+  // Add month names to months drop down menu
+  monthNames.forEach((month, i) => {
+    document.getElementById('month-list').innerHTML += (
+      `<li><a class="dropdown-item" value=${i}>${month}</a></li>`
+    );
+  });
+  // Change months according to month menu
+  document.querySelectorAll('#month-list li').forEach(item =>
+    item.addEventListener("click", event => {
+      month = event.target.getAttribute("value");
+    }));
+
+  // Add month names to months drop down menu
+  for(year of tempData.keys()) {
+    document.getElementById('year-list').innerHTML += (
+      `<li><a class="dropdown-item">${year}</a></li>`
+    );
+  };
+  // Change months according to month menu
+  document.querySelectorAll('#year-list li').forEach(item =>
+    item.addEventListener("click", event => {
+      year = +event.target.innerHTML;
+    }));
 });
-// Change months according to month menu
-document.querySelectorAll('#month-list li').forEach(item =>
-  item.addEventListener("click", event => {
-    month = event.target.getAttribute("value");
-  }));
