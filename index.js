@@ -1,6 +1,7 @@
 import * as areaChart from "./areaChart.js";
 import * as polarArea from "./polarArea.js";
 import * as choroplethMap from "./choroplethMap.js";
+import * as weatherRadial from "./weatherRadial.js";
 
 const monthNames = [
   "January",
@@ -32,6 +33,7 @@ slider.max = lastYear;
 areaChart.initChart("#areaChart");
 polarArea.initChart("#polarArea");
 choroplethMap.initChart("#choroplethMap");
+weatherRadial.initChart("#weatherRadial");
 
 // Datasets to load
 const dataPromises = [
