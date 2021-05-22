@@ -31,10 +31,6 @@ body {
   background-color: #555;
 }
 
-.sectionRule {
-  border: 1px solid #222529;
-}
-
 #outerContainer {
   /* padding: 100px; */
   display: flex;
