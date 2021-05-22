@@ -166,7 +166,7 @@ function updateChart(data) {
     .lower()
     .merge(bars)
     .attr("class", "Bar")
-    .on("mousemove", function (event, d) {
+    .on("pointermove", function (event, d) {
       hovered = true;
       tipMonth = d.Statistics.slice(0, 3);
       hovMonth = monthNames.findIndex((month) => month == tipMonth);
@@ -187,7 +187,7 @@ function updateChart(data) {
         .style("opacity", 1)
         .style("stroke", "black");
     })
-    .on("mouseleave", function (event) {
+    .on("pointerleave", function (event) {
       hovered = false;
       d3.selectAll(".Bar").transition().duration(50).style("opacity", 1);
       d3.select(this).transition().duration(50).style("stroke", "none");

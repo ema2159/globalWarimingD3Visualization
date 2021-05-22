@@ -124,7 +124,7 @@ function updateChart(topo, data, month) {
 
   // Interactivity
   choroMap
-    .on("mousemove", function (event, d) {
+    .on("pointermove", function (event, d) {
       hovered = true;
       tipCountry = d.total ? d.total[0].ISO3 : null;
       tipData = tipCountry
@@ -146,7 +146,7 @@ function updateChart(topo, data, month) {
         .style("stroke", "#0A0A0A")
         .style("stroke-width", "0.5px");
     })
-    .on("mouseleave", function (event) {
+    .on("pointerleave", function (event) {
       hovered = false;
       // Country highlighting
       d3.selectAll(".Country").transition().duration(50).style("opacity", 1);
