@@ -34,7 +34,7 @@ polarArea.initChart("#polarArea");
 choroplethMap.initChart("#choroplethMap");
 
 // Datasets to load
-let dataPromises = [
+const dataPromises = [
   d3.csv("data/temp-1901-2020-all.csv"),
   d3.json("data/world.geo.json"),
 ];
@@ -42,7 +42,7 @@ let dataPromises = [
 // Load datasets and start visualization
 Promise.all(dataPromises).then(function (data) {
   let tempData = data[0];
-  let topoData = data[1];
+  const topoData = data[1];
   // Group data per country and per year
   tempData = d3.group(
     tempData,
@@ -88,7 +88,7 @@ Promise.all(dataPromises).then(function (data) {
   // document.getElementById('month-list').addEventListener();
   const playButton = d3.select("#play-button");
   playButton.on("click", function () {
-    let button = d3.select(this);
+    const button = d3.select(this);
     if (button.text() == "Pause") {
       moving = false;
       interval.stop();
