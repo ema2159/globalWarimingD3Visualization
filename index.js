@@ -38,18 +38,22 @@ choroplethMap.initChart("#choroplethMap");
 // Datasets to load
 const dataPromises = [
   d3.csv("data/temp-1901-2020-all.csv"),
+  d3.csv("data/HadCRUT4.csv"),
   d3.json("data/world.geo.json"),
 ];
 
 // Load datasets and start visualization
 Promise.all(dataPromises).then(function (data) {
-  let tempData = data[0];
-  const topoData = data[1];
+  const topoData = data[2];
   // Group data per country and per year
-  tempData = d3.group(
-    tempData,
+  const tempData = d3.group(
+    data[0],
     (d) => d.Year,
     (d) => d.ISO3
+  );
+  const anomalyData = d3.group(
+    data[1],
+    (d) => d.Year
   );
 
   function updateCharts() {
