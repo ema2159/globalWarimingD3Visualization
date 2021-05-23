@@ -121,7 +121,8 @@ function initChart(canvasElement) {
   }
 
   //Create the radial gradient
-  svg.append("defs")
+  barWrapper
+    .append("defs")
     .append("radialGradient")
     .attr("id", "radial-gradient")
     .selectAll("stop") 
