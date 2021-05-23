@@ -152,14 +152,14 @@ function updateChart(data, nextYear) {
     for(let year = currYear; year < nextYear; year++) {
       const yearData = data.get(String(year));
       //Create path using line function
-      const path = pathWrapper.append("path")
-            .lower()
-            .attr("class", "line")
-            .attr("stroke-width", 3)
-            .attr("fill", "none")
-            .attr("d", line(yearData))
-            .attr("x", -0.75)
-            .style("stroke", "url(#radial-gradient)")
+      const path = pathWrapper
+        .append("path")
+        .attr("class", "line")
+        .attr("stroke-width", 5)
+        .attr("fill", "none")
+        .attr("d", line(yearData))
+        .attr("x", -0.75)
+        .style("stroke", "url(#radial-gradient)");
 
       const totalLength = path.node().getTotalLength();
 
