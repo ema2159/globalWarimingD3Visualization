@@ -11,11 +11,12 @@ let svg,
     y,
     colorScale,
     distScale,
-    radianScale,
+    radialScale,
     title,
     line,
     barWrapper;
 
+const firstYear = 1901;
 const monthNames = [
   "Jan",
   "Feb",
@@ -63,9 +64,9 @@ function initChart(canvasElement) {
       .range([INNERRADIUS, OUTERRADIUS])
       .domain([domLow, domHigh]); 
   
-  radianScale = d3.scaleLinear()
+  radialScale = d3.scaleLinear()
     .range([0, Math.PI*2])  
-    .domain([0, 11]); // for 12 months
+    .domain([1, 12]); // for 12 months
 
   // Title
   //Append title to the top
@@ -144,11 +145,27 @@ function initChart(canvasElement) {
     .attr("stop-color", (d, i) => colorScale(tempPoint[i]));
 
   line = d3.lineRadial()
-    .angle(function(d) { return radian(d.Month); })  
-    .radius(function(d) { return distScale(d.Temperature); });
+    .angle(function(d) { return radialScale(d.Month); })
+    .radius(function(d) { return distScale(d.Anomaly); });
 }
 
-function updateChart(data) {
+function updateChart(data, year) {
+  const trans = d3.transition().duration(400);
+  const yearData = data.get(String(year));
+  //Create path using line function
+  const path = barWrapper.append("path")
+        .attr("fill", "none")
+        .attr("d", line(yearData))
+        .attr("class", "line")
+        .attr("x", -0.75)
+        .style("stroke", "url(#radial-gradient)")
+
+  const totalLength = path.node().getTotalLength();
+
+  path.attr("stroke-dasharray", totalLength + " " + totalLength)
+    .attr("stroke-dashoffset", totalLength)
+    .transition(trans)
+    .attr("stroke-dashoffset", 0);
 }
 
 export {initChart, updateChart};
