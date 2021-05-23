@@ -185,11 +185,13 @@ function updateChart(data, nextYear) {
 
       const totalLength = path.node().getTotalLength();
 
-      path
-        .attr("stroke-dasharray", totalLength + " " + totalLength)
-        .attr("stroke-dashoffset", totalLength)
-        .transition(trans)
-        .attr("stroke-dashoffset", 0);
+      if ((nextYear-currYear) == 1) {
+        path
+          .attr("stroke-dasharray", totalLength + " " + totalLength)
+          .attr("stroke-dashoffset", totalLength)
+          .transition(trans)
+          .attr("stroke-dashoffset", 0);
+      }
     }
   }
   yearText.text(nextYear);
