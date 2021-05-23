@@ -11,9 +11,12 @@ let svg,
     distScale,
     radialScale,
     title,
+    yearText,
     line,
-    barWrapper;
+    barWrapper,
+    pathWrapper;
 
+let currYear = 1901;
 
 // Domain data
 const domLow = -1.5,  //-15, low end of data
@@ -57,12 +60,15 @@ function initChart(canvasElement) {
     .append("text")
     .attr("dy", HEIGHT/2)
     .attr("text-anchor", "middle")
-    .text("Temperature Anomaly");
+    .text("World Temperature Anomaly");
 
   // Add axes
   //Wrapper for the bars and to position it downward
   barWrapper = svg.append("g")
     .attr("transform", "translate(" + (WIDTH / 2) + "," + (HEIGHT / 2) + ")");
+
+  pathWrapper = barWrapper.append("g")
+    .attr("id", "pathWrapper");
   
   //Draw gridlines below the bars
   const axes = barWrapper.selectAll(".gridCircles")
@@ -100,11 +106,10 @@ function initChart(canvasElement) {
     .attr("y2", -OUTERRADIUS * 1.1);
 
   //Add year in center
-  barWrapper.append("text")
+  yearText = barWrapper.append("text")
     .attr("class", "yearText")
     .attr("text-anchor", "middle")
-    .attr("y", 8)
-    .text("1850");
+    .attr("y", 8);
 
   // Add radial gradient for the line
   const numStops = 10;
@@ -131,23 +136,41 @@ function initChart(canvasElement) {
     .radius(function(d) { return distScale(d.Anomaly); });
 }
 
-function updateChart(data, year) {
-  const trans = d3.transition().duration(400);
-  const yearData = data.get(String(year));
-  //Create path using line function
-  const path = barWrapper.append("path")
-        .attr("fill", "none")
-        .attr("d", line(yearData))
-        .attr("class", "line")
-        .attr("x", -0.75)
-        .style("stroke", "url(#radial-gradient)")
+function updateChart(data, nextYear) {
+  const trans = d3.transition().duration(400).ease(d3.easeCubicIn);
 
-  const totalLength = path.node().getTotalLength();
+  if(nextYear < currYear) {
+    const paths = document.getElementById("pathWrapper").children;
+    const removeRange = paths.length - (currYear - nextYear);
+    const removeElems = [];
+    for(let i=removeRange; i < paths.length; i++) {
+      removeElems.push(paths[i]);
+    }
+    removeElems.forEach(elem => elem.parentNode.removeChild(elem));
+  }
+  else if(nextYear > currYear) {
+    for(let year = currYear; year < nextYear; year++) {
+      const yearData = data.get(String(year));
+      //Create path using line function
+      const path = pathWrapper.append("path")
+            .lower()
+            .attr("class", "line")
+            .attr("stroke-width", 3)
+            .attr("fill", "none")
+            .attr("d", line(yearData))
+            .attr("x", -0.75)
+            .style("stroke", "url(#radial-gradient)")
 
-  path.attr("stroke-dasharray", totalLength + " " + totalLength)
-    .attr("stroke-dashoffset", totalLength)
-    .transition(trans)
-    .attr("stroke-dashoffset", 0);
+      const totalLength = path.node().getTotalLength();
+
+      path.attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition(trans)
+        .attr("stroke-dashoffset", 0);
+    }
+  }
+  yearText.text(nextYear);
+  currYear = nextYear;
 }
 
 export {initChart, updateChart};
