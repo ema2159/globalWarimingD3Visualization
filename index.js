@@ -59,8 +59,8 @@ Promise.all(dataPromises).then(function (data) {
   function updateCharts() {
     const yearData = tempData.get(String(year));
     const countryData = yearData.get(country);
+    polarArea.updateChart(countryData);
     areaChart.updateChart(countryData);
-    polarArea.updateChart(countryData, month);
     anomalyRadial.updateChart(anomalyData, year);
     choroplethMap.updateChart(topoData, yearData, month);
   }
