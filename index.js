@@ -1,7 +1,7 @@
 import * as areaChart from "./areaChart.js";
 import * as polarArea from "./polarArea.js";
 import * as choroplethMap from "./choroplethMap.js";
-import * as weatherRadial from "./weatherRadial.js";
+import * as anomalyRadial from "./anomalyRadial.js";
 
 const monthNames = [
   "January",
@@ -32,8 +32,8 @@ slider.max = lastYear;
 // Init charts
 areaChart.initChart("#areaChart");
 polarArea.initChart("#polarArea");
+anomalyRadial.initChart("#anomalyRadial");
 choroplethMap.initChart("#choroplethMap");
-weatherRadial.initChart("#weatherRadial");
 
 // Datasets to load
 const dataPromises = [
@@ -57,6 +57,7 @@ Promise.all(dataPromises).then(function (data) {
     const countryData = yearData.get(country);
     areaChart.updateChart(countryData);
     polarArea.updateChart(countryData, month);
+    anomalyRadial.updateChart(anomalyData, year);
     choroplethMap.updateChart(topoData, yearData, month);
   }
   updateCharts();
