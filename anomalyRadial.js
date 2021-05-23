@@ -42,8 +42,7 @@ function initChart(canvasElement) {
   colorScale = d3
     .scaleLinear()
     .domain([domLow, (domLow + domHigh) / 2, domHigh])
-    .range(["#1788de", "#ffff8c", "#CE241C"])
-    .interpolate(d3.interpolateHcl);
+    .range(["#1788de", "#ffff8c", "#CE241C"]);
 
   //Scale for the heights of the bar, not starting at zero to give the bars an initial offset outward
   distScale = d3
@@ -128,27 +127,6 @@ function initChart(canvasElement) {
     .attr("text-anchor", "middle")
     .attr("y", 8);
 
-  // Add radial gradient for the line
-  const numStops = 10;
-  let tempRange = distScale.domain();
-  tempRange[2] = tempRange[1] - tempRange[0];
-  const tempPoint = [];
-  for (let i = 0; i < numStops; i++) {
-    tempPoint.push((i * tempRange[2]) / (numStops - 1) + tempRange[0]);
-  }
-
-  //Create the radial gradient
-  barWrapper
-    .append("defs")
-    .append("radialGradient")
-    .attr("id", "radial-gradient")
-    .selectAll("stop")
-    .data(d3.range(numStops))
-    .enter()
-    .append("stop")
-    .attr("offset", (d, i) => distScale(tempPoint[i]) / OUTERRADIUS)
-    .attr("stop-color", (d, i) => colorScale(tempPoint[i]));
-
   line = d3
     .lineRadial()
     .angle(function (d) {
@@ -175,13 +153,13 @@ function updateChart(data, nextYear) {
       const yearData = data.get(String(year));
       //Create path using line function
       const path = pathWrapper
-        .append("path")
-        .attr("class", "line")
-        .attr("stroke-width", 5)
-        .attr("fill", "none")
-        .attr("d", line(yearData))
-        .attr("x", -0.75)
-        .style("stroke", "url(#radial-gradient)");
+            .append("path")
+            .attr("class", "line")
+            .attr("stroke-width", 5)
+            .attr("fill", "none")
+            .attr("d", line(yearData))
+            .attr("x", -0.75)
+            .style("stroke", colorScale(yearData[0].Anomaly));
 
       const totalLength = path.node().getTotalLength();
 
