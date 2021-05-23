@@ -7,8 +7,6 @@ const INNERRADIUS = OUTERRADIUS * 0.1;
 
 let svg,
     g,
-    x,
-    y,
     colorScale,
     distScale,
     radialScale,
@@ -16,27 +14,11 @@ let svg,
     line,
     barWrapper;
 
-const firstYear = 1901;
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 
 // Domain data
 const domLow = -1.5,  //-15, low end of data
       domHigh = 1.25,  //30, high end of data
-      axisTicks = [-1, 0, 1],   //[-20,-10,0,10,20,30];  [-2,-1,0,1,2,3];  [-1.5,-0.5,0.5,1.5];
-      duration = 25000; //100000, 50000
+      axisTicks = [-1, 0, 1];   //[-20,-10,0,10,20,30];  [-2,-1,0,1,2,3];  [-1.5,-0.5,0.5,1.5];
 
 function initChart(canvasElement) {
   // Visualization canvas
